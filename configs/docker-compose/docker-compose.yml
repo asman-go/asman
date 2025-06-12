@@ -44,6 +44,20 @@ services:
       - asman-backend
       - asman-database
 
+  frontend-py:
+    profiles: [ "all" ]
+    build:
+      context: ${PWD}/dependencies/frontend-py
+      dockerfile: deploy/Dockerfile
+    container_name: asman-frontend-py
+    restart: always
+    environment:
+      ENVIRONMENT: production
+    expose:
+      - 3000
+    networks:
+      - asman-backend
+
   postgres:
     profiles: [ "all", "backend" ]
     container_name: asman-postgres-production

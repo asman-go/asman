@@ -19,9 +19,9 @@ server {
     error_log /var/log/nginx/api_error.log;
     access_log /var/log/nginx/api_access.log;
 
-    set $api_asman_host http://asman-api-gateway:3000;
+    set $asman_frontend_host http://asman-frontend-py:3000;
 
     location / {
-        proxy_pass $api_asman_host;
+        proxy_pass $asman_frontend_host;
     }
 }

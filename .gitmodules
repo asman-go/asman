@@ -4,3 +4,6 @@
 [submodule "api-gateway"]
 	path = dependencies/api-gateway
 	url = git@github.com:asman-go/api-gateway.git
+[submodule "frontend-py"]
+	path = dependencies/frontend-py
+	url = git@github.com:asman-go/frontend-py.git
