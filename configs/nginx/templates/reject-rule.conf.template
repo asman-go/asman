@@ -1,0 +1,19 @@
+# Отклоняем неизвестные хосты
+
+server {
+    listen 80 default_server;
+    server_name _;
+    return 404;
+}
+
+server {
+    listen 443 ssl default_server;
+    listen [::]:443 ssl default_server;
+    server_name _;
+    
+    # Нужен любой валидный сертификат для SSL handshake
+    ssl_certificate /etc/ssl/asman.internal.crt;
+    ssl_certificate_key /etc/ssl/asman.internal.key;
+    
+    return 404;
+}
