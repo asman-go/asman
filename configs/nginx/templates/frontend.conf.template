@@ -1,0 +1,27 @@
+server {
+    listen          80;
+    server_name     asman.internal;
+    return          301     https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name     asman.internal;
+
+    # Сертификаты
+    ssl_certificate /etc/ssl/asman.internal.crt;
+    ssl_certificate_key /etc/ssl/asman.internal.key;
+
+    include /etc/nginx/ssl-params.conf;
+
+    # Логи
+    error_log /var/log/nginx/api_error.log;
+    access_log /var/log/nginx/api_access.log;
+
+    set $api_asman_host http://asman-api-gateway:3000;
+
+    location / {
+        proxy_pass $api_asman_host;
+    }
+}
