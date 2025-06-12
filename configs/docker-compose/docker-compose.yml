@@ -1,0 +1,110 @@
+services:
+  nginx:
+    profiles: [ "all", "backend" ]
+    image: nginx:alpine
+    container_name: asman-nginx
+    restart: always
+    ports:
+      - 10443:443
+      - 10080:80
+    volumes:
+      - ${PWD}/configs/nginx/http.conf:/etc/nginx/conf.d/http.conf:ro
+      - ${PWD}/configs/nginx/ssl-params.conf:/etc/nginx/ssl-params.conf:ro
+      - ${PWD}/configs/nginx/ssl:/etc/ssl:ro
+      - ${PWD}/configs/nginx/templates:/etc/nginx/templates:ro
+      - nginx-logs:/var/log/nginx
+    networks:
+      - asman-frontend
+      - asman-backend
+
+  api-gateway:
+    profiles: [ "all", "backend" ]
+    build:
+      context: ${PWD}/dependencies/api-gateway
+      dockerfile: deploy/Dockerfile
+    container_name: asman-api-gateway
+    restart: always
+    env_file:
+      - ${PWD}/configs/asman/api-gateway.env
+      - ${PWD}/configs/asman/background.env
+      - ${PWD}/configs/postgres/postgres.env
+    environment:
+      POSTGRES_HOST: asman-postgres-production
+    depends_on:
+      - redis
+      - postgres
+
+    expose:
+      - 3000
+
+    ports:
+      # - 7860:3000
+      - 5555:5555  # flower
+    networks:
+      - asman-backend
+      - asman-database
+
+  postgres:
+    profiles: [ "all", "backend" ]
+    container_name: asman-postgres-production
+    image: postgres:alpine
+    restart: always
+    env_file:
+      - ${PWD}/configs/postgres/postgres.env
+    command: >
+      postgres -c log_statement=all
+    volumes:
+      - ${PWD}/configs/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - asman-database
+
+  redis:
+    profiles: [ "all", "backend" ]
+    container_name: asman-redis-production
+    image: redis:latest
+    restart: always
+    expose:
+      - 6379
+    networks:
+      - asman-database
+
+  postgres-test:
+    profiles: [ "test" ]
+    container_name: asman-postgres-testing
+    image: postgres:alpine
+    restart: always
+    ports:
+      - 6432:5432
+    env_file:
+      - ${PWD}/configs/postgres/postgres.env
+    command: >
+      postgres -c log_statement=all
+    volumes:
+      - ${PWD}/configs/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres-data-test:/var/lib/postgresql/data
+    networks:
+      - asman-database
+
+  # dynamodb для тестов
+  dynamodb-test:
+    profiles: [ "test" ]
+    container_name: asman-dynamodb-testing
+    image: amazon/dynamodb-local
+    restart: always
+    environment:
+      DYNAMODB_LOCAL_LOG_LEVEL: DEBUG
+    ports:
+      - 8000:8000
+    networks:
+      - asman-database
+
+networks:
+  asman-frontend:
+  asman-backend:
+  asman-database:
+
+volumes:
+  nginx-logs:
+  postgres-data:
+  postgres-data-test:

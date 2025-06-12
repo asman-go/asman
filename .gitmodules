@@ -1,0 +1,6 @@
+[submodule "asman-core"]
+	path = dependencies/asman-core
+	url = git@github.com:asman-go/core.git
+[submodule "api-gateway"]
+	path = dependencies/api-gateway
+	url = git@github.com:asman-go/api-gateway.git
