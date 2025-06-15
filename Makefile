@@ -1,13 +1,16 @@
+# Эта переменная в env'ах нужна для docker-compose: локальные пути будут определяться корректно
 export PWD := $(shell pwd)
 
 hello:
 	@echo 'Build Asman project'
 
 deps:
-	@git submodule update --recursive
+	# @git submodule update --recursive
+	# @git submodule foreach 'git checkout main && git pull'
+	# @git pull --
+	@echo 'Build Asman project'
 
 l-deploy:
-	@echo 'Поднимаем приложение локально ${PWD} ???'
 	# Останавливаем контейнеры, если запущены
 	@docker compose -f configs/docker-compose/docker-compose.yml --profile all down
 	# Собираем и запускаем

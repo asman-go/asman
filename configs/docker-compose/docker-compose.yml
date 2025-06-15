@@ -51,6 +51,8 @@ services:
       dockerfile: deploy/Dockerfile
     container_name: asman-frontend-py
     restart: always
+    env_file:
+      - ${PWD}/configs/asman/frontend-py.env
     environment:
       ENVIRONMENT: production
     expose:
