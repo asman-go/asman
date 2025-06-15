@@ -5,10 +5,13 @@ hello:
 	@echo 'Build Asman project'
 
 deps:
-	# @git submodule update --recursive
-	# @git submodule foreach 'git checkout main && git pull'
-	# @git pull --
-	@echo 'Build Asman project'
+	@echo 'Pull dependencies'
+	@git submodule update --init --recursive
+	@git submodule foreach 'git checkout main && git pull'
+
+deps-init:
+	@echo 'Pull project and dependencies recursively'
+	@git pull --recurse-submodules
 
 l-deploy:
 	# Останавливаем контейнеры, если запущены
