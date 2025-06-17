@@ -7,3 +7,6 @@
 [submodule "frontend-py"]
 	path = dependencies/frontend-py
 	url = git@github.com:asman-go/frontend-py.git
+[submodule "asman-notes"]
+	path = dependencies/asman-notes
+	url = git@github.com:asman-go/product.git
