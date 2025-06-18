@@ -9,11 +9,8 @@ server {
     http2 on;
     server_name     asman.internal;
 
-    # Сертификаты
-    ssl_certificate /etc/ssl/asman.internal.crt;
-    ssl_certificate_key /etc/ssl/asman.internal.key;
-
-    include /etc/nginx/ssl-params.conf;
+    include /etc/nginx/ssl/params.conf;
+    include /etc/nginx/ssl/certificates.conf;
 
     # Логи
     error_log /var/log/nginx/api_error.log;

@@ -9,8 +9,8 @@ services:
       - 10080:80
     volumes:
       - ${PWD}/configs/nginx/http.conf:/etc/nginx/conf.d/http.conf:ro
-      - ${PWD}/configs/nginx/ssl-params.conf:/etc/nginx/ssl-params.conf:ro
-      - ${PWD}/configs/nginx/ssl:/etc/ssl:ro
+      - ${PWD}/configs/nginx/ssl:/etc/nginx/ssl:ro
+      - ${PWD}/configs/nginx/certificates:/etc/ssl:ro
       - ${PWD}/configs/nginx/templates:/etc/nginx/templates:ro
       - nginx-logs:/var/log/nginx
     networks:
