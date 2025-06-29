@@ -87,6 +87,16 @@ services:
     networks:
       - asman-database
 
+  redis-test:
+    profiles: [ "test" ]
+    container_name: asman-redis-testing
+    image: redis:latest
+    restart: always
+    ports:
+      - 7379:6379
+    networks:
+      - asman-database
+
   postgres-test:
     profiles: [ "test" ]
     container_name: asman-postgres-testing
