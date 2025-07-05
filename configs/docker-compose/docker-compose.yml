@@ -62,6 +62,22 @@ services:
     networks:
       - asman-backend
 
+  adminer:
+    image: adminer
+    ports:
+      - 9090:8080
+    environment:
+      - ADMINER_DEFAULT_SERVER=asman-postgres-production
+      - ADMINER_DESIGN=pepa-linha
+    env_file:
+      - ${PWD}/configs/adminer/adminer.env
+    # volumes:
+    #   - ${PWD}/configs/adminer/config.php:/var/html/index.php
+    networks:
+      - asman-database
+    depends_on:
+      - postgres
+
   postgres:
     profiles: [ "all", "backend" ]
     container_name: asman-postgres-production
