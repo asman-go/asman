@@ -63,6 +63,7 @@ services:
       - asman-backend
 
   adminer:
+    profiles: [ "all", "backend" ]
     image: adminer
     ports:
       - 9090:8080
